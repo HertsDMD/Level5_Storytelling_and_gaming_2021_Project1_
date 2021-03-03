@@ -27,11 +27,15 @@ public class MoveObject : MonoBehaviour
 
     void CastRay()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, ObjectToSelectLayer);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // shoots out a ray form the mouse position
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, ObjectToSelectLayer); // performs a raycast hit form the mouse position in the z direction
         if (hit)
         {
+            // Debug.Log(hit.collider.gameObject.name);
+            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); // gets the mouse position in world space - converts it from pixel space to world space
+            targetPosition.z = hit.collider.transform.position.z; // retains the hit object' s original z position
 
+            hit.collider.transform.position = targetPosition; // updates the hit object's position to match the target positions
         }
     }
 }
