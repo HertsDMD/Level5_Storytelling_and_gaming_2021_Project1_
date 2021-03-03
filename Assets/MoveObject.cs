@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MoveObject : MonoBehaviour
 {
 
     Vector3 targetPosition;
     public LayerMask ObjectToSelectLayer;
+
+    bool MouseClick;
+
+    public Action MouseMoveEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +27,10 @@ public class MoveObject : MonoBehaviour
         {
             CastRay();
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+            MouseClick = true;
+        }
 
     }
 
@@ -36,6 +45,13 @@ public class MoveObject : MonoBehaviour
             targetPosition.z = hit.collider.transform.position.z; // retains the hit object' s original z position
 
             hit.collider.transform.position = targetPosition; // updates the hit object's position to match the target positions
+
+            if (MouseClick)
+            {
+                MouseMoveEvent?.Invoke();
+
+                MouseClick = false;
+            }
         }
     }
 }
