@@ -47,8 +47,6 @@ public class MoveObject_v2 : MonoBehaviour
 
         if (hit) // if the cursor has collided with an object
         {
-            isDragging = true;
-            ItemSelectedEvent?.Invoke(selectedItemName = hit.collider.gameObject.transform.name, isDragging);
             hit.collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
             hit.collider.gameObject.GetComponent<Rigidbody2D>().rotation = 0;
@@ -57,6 +55,9 @@ public class MoveObject_v2 : MonoBehaviour
             targetPosition.z = hit.collider.gameObject.transform.position.z; // retains the hit object' s original z position
             hit.collider.gameObject.transform.position = targetPosition; // updates the hit object's position to match the target positions
             particles.gameObject.transform.position = hit.collider.gameObject.transform.position;
+
+            isDragging = true;
+            ItemSelectedEvent?.Invoke(selectedItemName = hit.collider.gameObject.transform.name, isDragging);
 
             if (MouseClick)
             {
