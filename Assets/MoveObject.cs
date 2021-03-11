@@ -11,7 +11,7 @@ public class MoveObject : MonoBehaviour
 
     bool MouseClick;
 
-    public Action MouseMoveEvent;
+    public Action MouseClickEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class MoveObject : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0)) 
         {
             CastRay();
         }
@@ -36,8 +36,9 @@ public class MoveObject : MonoBehaviour
 
     void CastRay()
     {
+        float radius = 1f;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // shoots out a ray form the mouse position
-        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, ObjectToSelectLayer); // performs a raycast hit form the mouse position in the z direction
+        RaycastHit2D hit = Physics2D.CircleCast(ray.origin, radius, ray.direction, Mathf.Infinity, ObjectToSelectLayer); // performs a raycast hit form the mouse position in the z direction
         if (hit)
         {
             // Debug.Log(hit.collider.gameObject.name);
@@ -48,7 +49,7 @@ public class MoveObject : MonoBehaviour
 
             if (MouseClick)
             {
-                MouseMoveEvent?.Invoke();
+                MouseClickEvent?.Invoke();
 
                 MouseClick = false;
             }
