@@ -10,33 +10,37 @@ public class MoveObject_v2 : MonoBehaviour
     public LayerMask ObjectToSelectLayer;
 
     bool MouseClick;
-
     public Action MouseMoveEvent;
     RaycastHit2D hit;
     string selectedItemName;
     bool isDragging;
     public Action<string, bool> ItemSelectedEvent;
     ParticleSystem particles;
+
+    LineRenderAnimation lineAnim;
+    bool lineTrigger;
   
 
     private void Start()
     {
         particles = GetComponentInChildren<ParticleSystem>();
+        lineAnim = FindObjectOfType<LineRenderAnimation>();
+        lineTrigger = true;
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0)) // right mouse button click registered
         {
-            MouseClick = true;
+            MouseClick = true;          
         }
         else if (Input.GetMouseButton(0)) // right mouse button held down continuously
         {
-            CastRayOnMousePress();            
+            CastRayOnMousePress();
         }
         else if (Input.GetMouseButtonUp(0)) // right mouse button release registered
         {
-            CastRayOnMouseReslease();         
+            CastRayOnMouseReslease();
         }       
     }    
 
@@ -47,6 +51,8 @@ public class MoveObject_v2 : MonoBehaviour
 
         if (hit) // if the cursor has collided with an object
         {
+            if (lineTrigger) lineAnim.EndLineAnimation(); lineTrigger = false;
+
             hit.collider.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
             hit.collider.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
             hit.collider.gameObject.GetComponent<Rigidbody2D>().rotation = 0;
